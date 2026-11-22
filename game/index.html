@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#101e1f">
+  <title>The Velvet Vault</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="js/museum.js"></script>
+  <script defer src="js/audio.js"></script>
+  <script defer src="js/vision.js"></script>
+  <script defer src="js/guards.js"></script>
+  <script defer src="js/cameras.js"></script>
+  <script defer src="js/player.js"></script>
+  <script defer src="js/render.js"></script>
+  <script defer src="js/game.js"></script>
+</head>
+<body>
+  <main id="viewport" aria-label="The Velvet Vault">
+    <div id="stage" data-phase="title">
+      <canvas id="scene" width="1280" height="720" aria-label="Overhead view of the Aurelian Museum"></canvas>
+
+      <section id="mission" hidden aria-label="Heist status">
+        <header class="mission-header">
+          <div class="wordmark">
+            <span class="sigil" aria-hidden="true"></span>
+            <div><p class="eyebrow">Aurelian Museum</p><p>The Velvet Vault</p></div>
+          </div>
+          <div id="alarm" class="alarm" data-level="clear">
+            <div class="alarm-label">
+              <span>Security alarm</span><span id="security-state">CLEAR</span>
+              <strong id="alarm-number">0%</strong>
+            </div>
+            <div id="alarm-meter" class="meter" role="meter" aria-label="Security alarm" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <span id="alarm-fill"></span><i class="meter-midpoint"></i>
+            </div>
+          </div>
+          <div class="take"><span class="eyebrow">In the bag</span><strong id="loot-value">$0</strong></div>
+          <button id="pause-button" class="icon-button" type="button" aria-label="Pause game" title="Pause (P)">Ⅱ</button>
+        </header>
+
+        <aside class="dispatch" aria-label="Field notes">
+          <div class="objective">
+            <p class="eyebrow"><span class="mini-diamond"></span>Field notes</p>
+            <h2 id="objective-title">Lift the Star</h2>
+            <p id="objective-body" aria-live="polite">Cross to the Star Gallery. Hold E at the centerpiece to lift it.</p>
+          </div>
+          <div class="inventory">
+            <div class="inventory-label"><h3>Exhibit list</h3><span id="treasure-count">0 / 3 OPTIONAL</span></div>
+            <ul>
+              <li class="featured" data-loot="star"><i class="loot-symbol star" aria-hidden="true"></i><span>Aurelian Star</span><small>$95,000</small></li>
+              <li data-loot="mask"><i class="loot-symbol mask" aria-hidden="true"></i><span>Sun Mask</span><small>$12,500</small></li>
+              <li data-loot="serpent"><i class="loot-symbol serpent" aria-hidden="true"></i><span>Jade Serpent</span><small>$18,500</small></li>
+              <li data-loot="egg"><i class="loot-symbol egg" aria-hidden="true"></i><span>Imperial Egg</span><small>$24,000</small></li>
+            </ul>
+          </div>
+          <div class="map-key">
+            <h3>On the floor</h3>
+            <div><i class="key-dot amber"></i>Guard flashlight</div>
+            <div><i class="key-dot blue"></i>Camera sweep</div>
+            <div><i class="key-dot red"></i>Timed laser gate</div>
+          </div>
+        </aside>
+
+        <footer class="action-bar">
+          <div class="bindings">
+            <span><kbd>WASD</kbd><kbd>↑↓←→</kbd> Move</span>
+            <span><kbd>SHIFT</kbd> Tiptoe</span>
+            <span><kbd>E</kbd> Lift / exit</span>
+          </div>
+          <div class="attempt-clock"><span id="attempt-label">ATTEMPT 01</span><time id="run-time">00:00</time></div>
+          <button id="sound-button" class="sound-button" type="button" aria-pressed="false"><kbd>M</kbd><span id="sound-label">Sound on</span></button>
+        </footer>
+      </section>
+
+      <section id="title-screen" class="title-screen" aria-labelledby="title-heading">
+        <div class="title-copy">
+          <p class="eyebrow"><span class="mini-diamond"></span>The Aurelian Museum · After hours</p>
+          <h1 id="title-heading"><span>The</span> Velvet<br>Vault</h1>
+          <p class="title-story">You are Foxglove, a gentleman thief. Lift the Aurelian Star and take the skylight rope out before the museum locks down.</p>
+          <button id="start-button" class="primary-button" type="button">Begin the heist <span aria-hidden="true">↗</span></button>
+          <div class="title-controls">
+            <p><kbd>WASD</kbd><kbd>↑↓←→</kbd> Move</p>
+            <p><kbd>SHIFT</kbd> Tiptoe</p>
+            <p><kbd>E</kbd> Hold to lift</p>
+            <p><kbd>P</kbd><kbd>ESC</kbd> Pause <kbd>M</kbd> Mute</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="interruption" class="interruption" aria-labelledby="interrupt-title" hidden>
+        <div class="modal-panel">
+          <p class="eyebrow" id="interrupt-label">Heist suspended</p>
+          <h2 id="interrupt-title">Paused</h2>
+          <p id="interrupt-detail"></p>
+          <button id="interrupt-action" class="primary-button" type="button"></button>
+          <button id="return-button" class="text-button" type="button">Return to title</button>
+        </div>
+      </section>
+
+      <section id="win-screen" class="win-screen" hidden aria-labelledby="win-title">
+        <div class="win-copy">
+          <p class="eyebrow"><span class="mini-diamond"></span>The Aurelian Gazette · Morning edition</p>
+          <h2 id="win-title">Foxglove<br>gets away.</h2>
+          <div class="rank-line"><span>Heist rank</span><strong id="win-rank">GHOST</strong></div>
+          <dl class="report">
+            <div><dt>Time</dt><dd id="win-time">00:00</dd></div>
+            <div><dt>Take</dt><dd id="win-value">$0</dd></div>
+            <div><dt>Treasures</dt><dd id="win-treasures">0 / 3</dd></div>
+            <div><dt>Times spotted</dt><dd id="win-spotted">0</dd></div>
+            <div><dt>Alarms tripped</dt><dd id="win-trips">0</dd></div>
+            <div><dt>Attempts</dt><dd id="win-attempts">1</dd></div>
+          </dl>
+          <button id="again-button" class="primary-button" type="button">Plan another heist <span aria-hidden="true">↗</span></button>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "01-grand-hall.png",
+    "query": "?shot=play",
+    "caption": "Foxglove crosses the Grand Hall as a guard and a camera sweep the approach to the Aurelian Star."
+  },
+  {
+    "name": "02-on-alert.png",
+    "query": "?shot=alert",
+    "caption": "A guard spots Foxglove beside the Jade Serpent as the museum goes on alert."
+  },
+  {
+    "name": "03-calling-card.png",
+    "query": "?shot=title",
+    "caption": "The Velvet Vault opens on Foxglove's calling card and the night's assignment."
+  },
+  {
+    "name": "04-getaway.png",
+    "query": "?shot=win",
+    "caption": "The morning edition records the disappearance of the Aurelian Star and all three treasures."
+  }
+]
